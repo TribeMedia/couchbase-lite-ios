@@ -1015,6 +1015,9 @@ static void convertRevIDs(NSArray* revIDs,
                    source: (NSURL*)source
                     error: (NSError **)outError
 {
+    if (outError)
+        *outError = nil;
+
     if (_forest->isReadOnly()) {
         if (outError)
             *outError = CBLStatusToNSError(kCBLStatusForbidden, nil);
@@ -1081,7 +1084,7 @@ static void convertRevIDs(NSArray* revIDs,
         [_delegate databaseStorageChanged: change];
 
     if (CBLStatusIsError(status)) {
-        if (outError && !*outError)
+        if (outError)
             *outError = CBLStatusToNSError(status, nil);
     }
     return status;
